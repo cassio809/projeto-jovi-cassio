@@ -1,5 +1,109 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
-  background-color: #111827;
+  margin: 0;
+  min-height: 100%;
+  background-color: #020617;
   color: white;
   font-family: Arial, sans-serif;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 160ms ease, opacity 160ms ease, background-color 160ms ease;
+}
+
+button:active {
+  transform: scale(0.94);
+}
+
+.camera-control {
+  display: flex;
+  min-width: 42px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: rgb(0 0 0 / 0.35);
+  font-size: 1.3rem;
+}
+
+.camera-control.ativo {
+  background-color: rgb(250 204 21 / 0.9);
+  color: black;
+}
+
+.capture-button {
+  background-color: rgb(255 255 255 / 0.1);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.3);
+}
+
+.capture-button:active {
+  transform: scale(0.88);
+}
+
+.camera-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.25) 1px, transparent 1px);
+  background-size: 33.333% 33.333%;
+}
+
+#focus-indicator {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+#focus-indicator.ativo {
+  animation: focus-feedback 700ms ease-out;
+}
+
+#capture-dim.ativo {
+  animation: capture-feedback 280ms ease-out;
+}
+
+#toast {
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -20px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+#toast.visivel {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@keyframes focus-feedback {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+@keyframes capture-feedback {
+  0% {
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
