@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SmartCapture</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <main class="min-h-screen bg-slate-950 flex justify-center">
+
+    <!-- Tela da câmera -->
+    <section
+      id="camera-screen"
+      class="relative w-full max-w-md min-h-screen overflow-hidden bg-black"
+    >
+      <video
+        id="camera"
+        class="absolute inset-0 h-full w-full object-cover"
+        autoplay
+        playsinline
+      ></video>
+
+      <canvas id="photo-canvas" class="hidden"></canvas>
+
+      <div class="absolute inset-0 bg-black/20"></div>
+
+      <header class="absolute top-0 left-0 w-full p-5 z-10">
+        <nav class="flex items-center justify-between text-white">
+          <button type="button" aria-label="Configurações">⚙</button>
+          <button type="button" aria-label="Flash">⚡</button>
+          <button type="button" aria-label="Temporizador">◎</button>
+          <button type="button" aria-label="Proporção da foto">4:3</button>
+          <button type="button" aria-label="Filtros">◇</button>
+        </nav>
+      </header>
+
+      <footer class="absolute bottom-0 left-0 w-full p-6 z-10 text-white">
+        <h1 class="mb-8 text-center text-xl font-semibold">SmartCapture</h1>
+
+        <div class="flex items-center justify-between">
+          <button
+  id="open-image-picker"
+  type="button"
+  class="text-sm"
+>
+  Prévia
+</button>
+
+<input
+  id="image-picker"
+  type="file"
+  accept="image/*"
+  class="hidden"
+>
+
+          <button
+            id="capture-button"
+            type="button"
+            aria-label="Tirar foto"
+            class="h-20 w-20 rounded-full border-4 border-white bg-white/20"
+          ></button>
+
+          <button
+  id="switch-camera-button"
+  type="button"
+  aria-label="Trocar câmera"
+  class="text-2xl"
+>
+  ↻
+</button>
+        </div>
+      </footer>
+    </section>
+
+<!-- Tela de prévia -->
+<section
+  id="preview-screen"
+  class="relative hidden min-h-screen w-full max-w-md items-center justify-center overflow-hidden bg-black text-white"
+>
+  <!-- A mesma foto, desfocada, ao fundo -->
+  <img
+    id="preview-background"
+    class="absolute inset-0 h-full w-full scale-110 object-cover opacity-35 blur-xl"
+    alt=""
+  >
+
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <!-- Ação de compartilhamento -->
+  <button
+    id="share-button"
+    type="button"
+    class="absolute top-16 z-10 flex flex-col items-center gap-1 font-semibold"
+  >
+    <span class="text-3xl leading-none">⌃</span>
+    Compartilhar
+  </button>
+
+  <!-- Foto em destaque -->
+  <img
+    id="captured-photo"
+    draggable="false"
+class="relative z-10 h-[72vh] w-[78%] cursor-grab rounded-2xl object-cover shadow-2xl touch-none"
+    class="relative z-10 h-[72vh] w-[78%] rounded-2xl object-cover shadow-2xl"
+    alt="Foto capturada"
+  >
+
+  <!-- Excluir -->
+  <button
+    id="delete-photo"
+    type="button"
+    class="absolute left-5 z-10 font-semibold [writing-mode:vertical-rl]"
+  >
+    ‹ Excluir
+  </button>
+
+  <!-- Armazenar: vamos programar na próxima etapa -->
+  <button
+    id="store-button"
+    type="button"
+    class="absolute right-5 z-10 font-semibold [writing-mode:vertical-rl]"
+  >
+    Armazenar ›
+  </button>
+
+  <p class="absolute bottom-16 z-10 px-8 text-center text-lg font-semibold">
+    Arraste a foto para guardar, compartilhar ou excluir
+  </p>
+</section>
+
+    <!-- Tela de compartilhamento -->
+
+<section
+  id="share-screen"
+  class="relative hidden min-h-screen w-full max-w-md items-center justify-center overflow-hidden bg-black text-white"
+>
+  <img
+    id="share-background"
+    class="absolute inset-0 h-full w-full scale-110 object-cover opacity-30 blur-xl"
+    alt=""
+  >
+
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <h2 class="absolute top-16 z-10 text-xl font-semibold">
+    Compartilhar
+  </h2>
+
+  <img
+    id="share-photo"
+    class="relative z-10 h-[62vh] w-[78%] rounded-2xl object-cover shadow-2xl"
+    alt="Foto pronta para compartilhamento"
+  >
+
+  <footer class="absolute bottom-0 z-10 w-full bg-black p-6">
+    <div class="flex justify-between gap-3">
+      <button
+        type="button"
+        class="social-share-button flex h-16 w-16 items-center justify-center rounded-2xl bg-green-500 text-3xl font-bold"
+        aria-label="Compartilhar pelo WhatsApp"
+      >
+        W
+      </button>
+
+      <button
+        type="button"
+        class="social-share-button flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-3xl"
+        aria-label="Compartilhar pelo Instagram"
+      >
+        ◎
+      </button>
+
+      <button
+        type="button"
+        class="social-share-button flex h-16 w-16 items-center justify-center rounded-2xl bg-sky-500 text-3xl"
+        aria-label="Compartilhar pelo Telegram"
+      >
+        ✈
+      </button>
+
+      <button
+        type="button"
+        class="social-share-button flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-4xl font-bold"
+        aria-label="Compartilhar pelo Facebook"
+      >
+        f
+      </button>
+    </div>
+
+    <button
+      id="native-share-button"
+      type="button"
+      class="mt-5 w-full text-3xl"
+      aria-label="Abrir mais opções de compartilhamento"
+    >
+      ⌃
+    </button>
+  </footer>
+</section>
+
+
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
