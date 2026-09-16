@@ -13,7 +13,6 @@
 <body>
   <main class="min-h-screen bg-slate-950 flex justify-center">
 
-    <!-- Mensagens rápidas de feedback -->
     <div
       id="toast"
       class="pointer-events-none fixed top-6 z-50 rounded-full bg-black/80 px-5 py-3 text-center text-sm font-medium text-white shadow-lg"
@@ -35,64 +34,31 @@
 
       <canvas id="photo-canvas" class="hidden"></canvas>
 
-      <!-- Grade opcional da câmera -->
       <div id="camera-grid" class="camera-grid absolute inset-0 z-10 hidden pointer-events-none"></div>
-
-      <!-- Feedback de captura e foco -->
       <div id="capture-dim" class="pointer-events-none absolute inset-0 z-20 bg-black opacity-0"></div>
       <div id="focus-indicator" class="pointer-events-none absolute z-20 h-16 w-16 rounded-full border-2 border-yellow-400"></div>
 
       <!-- Controles superiores -->
-      <header class="absolute left-0 top-0 z-30 w-full bg-gradient-to-b from-black/80 to-transparent p-5">
+      <header class="absolute left-0 top-0 z-30 w-full bg-gradient-to-b from-black/70 to-transparent p-5">
         <nav class="flex items-center justify-between text-white">
-          <button
-            id="settings-button"
-            type="button"
-            class="camera-control"
-            aria-label="Abrir configurações"
-          >
+          <button id="settings-button" type="button" class="camera-control" aria-label="Configurações">
             ⚙
           </button>
 
-          <button
-            id="flash-button"
-            type="button"
-            class="camera-control"
-            aria-label="Ativar ou desativar flash"
-          >
+          <button id="flash-button" type="button" class="camera-control" aria-label="Flash">
             ⚡
           </button>
 
-          <button
-            id="timer-button"
-            type="button"
-            class="camera-control text-sm"
-            aria-label="Alterar temporizador"
-          >
+          <button id="timer-button" type="button" class="camera-control text-sm" aria-label="Temporizador">
             0s
           </button>
 
-          <button
-            id="ratio-button"
-            type="button"
-            class="camera-control text-sm"
-            aria-label="Alterar proporção da câmera"
-          >
+          <button id="ratio-button" type="button" class="camera-control text-sm" aria-label="Proporção da câmera">
             4:3
-          </button>
-
-          <button
-            id="switch-camera-button"
-            type="button"
-            class="camera-control"
-            aria-label="Trocar câmera"
-          >
-            ↻
           </button>
         </nav>
       </header>
 
-      <!-- Temporizador -->
       <div
         id="countdown"
         class="pointer-events-none absolute inset-0 z-30 hidden items-center justify-center bg-black/30 text-8xl font-bold text-white"
@@ -114,12 +80,7 @@
             Galeria
           </button>
 
-          <input
-            id="image-picker"
-            type="file"
-            accept="image/*"
-            class="hidden"
-          >
+          <input id="image-picker" type="file" accept="image/*" class="hidden">
 
           <button
             id="capture-button"
@@ -131,12 +92,13 @@
           </button>
 
           <button
-            id="open-preview-button"
+            id="switch-camera-button"
             type="button"
             class="flex min-w-16 flex-col items-center gap-1 text-sm"
+            aria-label="Trocar câmera"
           >
-            <span class="rounded-md border border-white/50 px-2 py-1 text-lg">◉</span>
-            Prévia
+            <span class="rounded-md border border-white/50 px-2 py-1 text-lg">↻</span>
+            Virar
           </button>
         </div>
       </footer>
@@ -205,12 +167,11 @@
 
       <div class="absolute inset-0 bg-black/60"></div>
 
-      <header class="absolute top-0 z-20 flex w-full items-center justify-between p-6">
+      <header class="absolute top-0 z-30 flex w-full items-center justify-between p-6">
         <button
           id="back-to-preview-button"
           type="button"
-          class="rounded-full bg-black/40 px-4 py-2 font-medium"
-          aria-label="Voltar para a prévia"
+          class="rounded-full bg-black/60 px-4 py-2 font-medium"
         >
           ← Voltar
         </button>
@@ -226,9 +187,9 @@
         alt="Foto pronta para compartilhamento"
       >
 
-      <footer class="absolute bottom-0 z-20 w-full bg-black p-6">
+      <footer class="absolute bottom-0 z-30 w-full bg-black p-6">
         <p class="mb-4 text-center text-sm text-slate-300">
-          Escolha um atalho ou abra todas as opções do celular.
+          Opções de compartilhamento
         </p>
 
         <div class="flex justify-between gap-3">
@@ -269,21 +230,13 @@
           </button>
         </div>
 
-        <button
-          id="native-share-button"
-          type="button"
-          class="mt-5 w-full rounded-xl border border-white/30 py-3 font-semibold"
-        >
-          Mais opções de compartilhamento ⌃
-        </button>
       </footer>
     </section>
 
-    <!-- Painel de configurações -->
+    <!-- Configurações -->
     <section
       id="settings-panel"
       class="absolute inset-0 z-50 hidden min-h-screen w-full max-w-md bg-slate-950/95 p-6 text-white backdrop-blur-md"
-      aria-label="Configurações da câmera"
     >
       <header class="mb-10 flex items-center justify-between">
         <h2 class="text-2xl font-semibold">Configurações</h2>
@@ -292,7 +245,6 @@
           id="close-settings-button"
           type="button"
           class="rounded-full bg-white/10 px-4 py-2"
-          aria-label="Fechar configurações"
         >
           ✕
         </button>
@@ -302,7 +254,7 @@
         <label class="flex cursor-pointer items-center justify-between rounded-2xl bg-white/10 p-5">
           <span>
             <strong class="block">Grade da câmera</strong>
-            <small class="text-slate-300">Ajuda no enquadramento da foto.</small>
+            <small class="text-slate-300">Ajuda no enquadramento.</small>
           </span>
 
           <input id="grid-toggle" type="checkbox" class="h-5 w-5 accent-yellow-400">
@@ -311,14 +263,14 @@
         <div class="rounded-2xl bg-white/10 p-5">
           <strong class="block">Foco por toque</strong>
           <small class="text-slate-300">
-            Toque na imagem da câmera para marcar o ponto de foco.
+            Toque na imagem para marcar o ponto de foco.
           </small>
         </div>
 
         <div class="rounded-2xl bg-white/10 p-5">
           <strong class="block">Flash</strong>
           <small class="text-slate-300">
-            Disponível apenas em aparelhos que oferecem suporte ao recurso.
+            Funciona apenas em aparelhos compatíveis.
           </small>
         </div>
       </div>

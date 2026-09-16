@@ -14,7 +14,6 @@ const shareBackground = document.querySelector("#share-background");
 const deletePhotoButton = document.querySelector("#delete-photo");
 const storeButton = document.querySelector("#store-button");
 const shareButton = document.querySelector("#share-button");
-const nativeShareButton = document.querySelector("#native-share-button");
 const backToPreviewButton = document.querySelector("#back-to-preview-button");
 
 const switchCameraButton = document.querySelector("#switch-camera-button");
@@ -29,7 +28,6 @@ const gridToggle = document.querySelector("#grid-toggle");
 const cameraGrid = document.querySelector("#camera-grid");
 
 const openImagePickerButton = document.querySelector("#open-image-picker");
-const openPreviewButton = document.querySelector("#open-preview-button");
 const imagePicker = document.querySelector("#image-picker");
 
 const socialShareButtons = document.querySelectorAll(".social-share-button");
@@ -84,14 +82,12 @@ function mostrarCamera() {
 
 function mostrarPrevia() {
   esconderTodasAsTelas();
-
   previewScreen.classList.remove("hidden");
   previewScreen.classList.add("flex");
 }
 
 function mostrarCompartilhamento() {
   esconderTodasAsTelas();
-
   shareScreen.classList.remove("hidden");
   shareScreen.classList.add("flex");
 }
@@ -156,7 +152,7 @@ async function alternarFlash() {
   const capacidades = track.getCapabilities ? track.getCapabilities() : {};
 
   if (!capacidades.torch) {
-    mostrarMensagem("Este aparelho não oferece controle de flash no navegador.");
+    mostrarMensagem("Este aparelho não oferece flash pelo navegador.");
     return;
   }
 
@@ -226,36 +222,14 @@ function atualizarGrade() {
 async function marcarFoco(evento) {
   const limitesCamera = camera.getBoundingClientRect();
 
-  const posicaoX = evento.clientX - limitesCamera.left;
-  const posicaoY = evento.clientY - limitesCamera.top;
-
-  focusIndicator.style.left = `${posicaoX}px`;
-  focusIndicator.style.top = `${posicaoY}px`;
+  focusIndicator.style.left = `${evento.clientX - limitesCamera.left}px`;
+  focusIndicator.style.top = `${evento.clientY - limitesCamera.top}px`;
 
   focusIndicator.classList.remove("ativo");
 
   void focusIndicator.offsetWidth;
 
   focusIndicator.classList.add("ativo");
-
-  const stream = camera.srcObject;
-
-  if (!stream) {
-    return;
-  }
-
-  const track = stream.getVideoTracks()[0];
-  const capacidades = track.getCapabilities ? track.getCapabilities() : {};
-
-  if (capacidades.focusMode && capacidades.focusMode.includes("continuous")) {
-    try {
-      await track.applyConstraints({
-        advanced: [{ focusMode: "continuous" }]
-      });
-    } catch (erro) {
-      console.log("Foco automático não pôde ser ajustado.", erro);
-    }
-  }
 
   if (navigator.vibrate) {
     navigator.vibrate(15);
@@ -289,11 +263,7 @@ function aguardarContagem(tempo) {
 }
 
 async function capturarFoto() {
-  if (emCaptura) {
-    return;
-  }
-
-  if (!camera.videoWidth) {
+  if (emCaptura || !camera.videoWidth) {
     mostrarMensagem("A câmera ainda não está disponível.");
     return;
   }
@@ -319,15 +289,13 @@ async function capturarFoto() {
     photoCanvas.height
   );
 
-  const fotoCapturada = photoCanvas.toDataURL("image/png");
-
   dispararEscurecimento();
 
   if (navigator.vibrate) {
     navigator.vibrate(30);
   }
 
-  prepararFoto(fotoCapturada);
+  prepararFoto(photoCanvas.toDataURL("image/png"));
 
   emCaptura = false;
 }
@@ -355,7 +323,6 @@ function excluirFoto() {
   previewBackground.src = "";
   sharePhoto.src = "";
   shareBackground.src = "";
-
   imagePicker.value = "";
 
   mostrarCamera();
@@ -412,15 +379,6 @@ openImagePickerButton.addEventListener("click", () => {
   imagePicker.click();
 });
 
-openPreviewButton.addEventListener("click", () => {
-  if (!ultimaFoto) {
-    mostrarMensagem("Ainda não existe uma foto para visualizar.");
-    return;
-  }
-
-  mostrarPrevia();
-});
-
 imagePicker.addEventListener("change", () => {
   const arquivoSelecionado = imagePicker.files[0];
 
@@ -439,16 +397,9 @@ imagePicker.addEventListener("change", () => {
 });
 
 deletePhotoButton.addEventListener("click", excluirFoto);
-
 storeButton.addEventListener("click", armazenarFoto);
-
 shareButton.addEventListener("click", mostrarCompartilhamento);
-
 backToPreviewButton.addEventListener("click", mostrarPrevia);
-
-nativeShareButton.addEventListener("click", () => {
-  compartilharFoto();
-});
 
 socialShareButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -469,17 +420,11 @@ switchCameraButton.addEventListener("click", () => {
 });
 
 flashButton.addEventListener("click", alternarFlash);
-
 timerButton.addEventListener("click", alterarTemporizador);
-
 ratioButton.addEventListener("click", alterarProporcao);
-
 settingsButton.addEventListener("click", abrirConfiguracoes);
-
 closeSettingsButton.addEventListener("click", fecharConfiguracoes);
-
 gridToggle.addEventListener("change", atualizarGrade);
-
 camera.addEventListener("pointerdown", marcarFoco);
 
 capturedPhoto.addEventListener("pointerdown", (evento) => {
@@ -490,7 +435,6 @@ capturedPhoto.addEventListener("pointerdown", (evento) => {
 capturedPhoto.addEventListener("pointerup", (evento) => {
   const distanciaX = evento.clientX - inicioX;
   const distanciaY = evento.clientY - inicioY;
-
   const distanciaMinima = 80;
 
   if (

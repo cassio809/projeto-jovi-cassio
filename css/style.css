@@ -12,8 +12,16 @@ body {
 }
 
 button {
+  border: 0;
+  outline: none;
   -webkit-tap-highlight-color: transparent;
   transition: transform 160ms ease, opacity 160ms ease, background-color 160ms ease;
+}
+
+button:focus,
+button:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 button:active {
@@ -26,14 +34,13 @@ button:active {
   min-height: 42px;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
-  background-color: rgb(0 0 0 / 0.35);
+  background: transparent;
+  color: white;
   font-size: 1.3rem;
 }
 
 .camera-control.ativo {
-  background-color: rgb(250 204 21 / 0.9);
-  color: black;
+  color: #facc15;
 }
 
 .capture-button {
